@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Motoristas - Mobilidade Urbana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+    <style>
+      /* Estilos para o tema escuro */
+      .dark .bg-yellow-50 {
+        background-color: #1a202c; 
+      }
+      .dark .bg-white {
+        background-color: #2d3748;
+      }
+      .dark .text-yellow-800 {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-600 {
+        color: #a0aec0; /* Cinza claro */
+      }
+      .dark .border-yellow-200 {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .placeholder-gray-500::placeholder {
+        color: #a0aec0;
+      }
+    </style>
+  </head>
+  <body class="bg-yellow-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-yellow-500 text-white shadow-lg">
+      <div
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <i data-feather="bus" class="w-8 h-8"></i>
+          <h1 class="text-2xl font-bold" id="formTitle">Gerenciar Motoristas</h1>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            onclick="window.location.href='dashboard.html'"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Voltar para Dashboard"
+          >
+            <i data-feather="arrow-left" class="w-6 h-6"></i>
+          </button>
+          <!-- <button
+            onclick="logout()"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Sair"
+          >
+            <i data-feather="log-out" class="w-6 h-6"></i>
+          </button> -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+      <div class="max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden p-8">
+        <h2 class="text-2xl font-bold text-yellow-800 dark:text-white mb-6 text-center" id="formSubtitle">
+          Cadastro de Novo Motorista
+        </h2>
+        <form id="driverForm">
+          <input type="hidden" id="driverId" name="driverId" value="">
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Nome Completo</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: João da Silva"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: joao.silva@empresa.com"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="cpf" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">CPF</label>
+            <input
+              type="text"
+              id="cpf"
+              name="cpf"
+              required
+              maxlength="14"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: 000.000.000-00"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="cnh" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">CNH</label>
+            <input
+              type="text"
+              id="cnh"
+              name="cnh"
+              required
+              maxlength="11"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: 00000000000"
+            />
+          </div>
+          <div class="mb-4">
+            <label for="bus_line" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Linha do Ônibus</label>
+            <select
+              id="bus_line"
+              name="bus_line"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+            >
+              <option value="">Selecione a Linha</option>
+            </select>
+          </div>
+          <div class="mb-6">
+            <label for="code" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Código de Motorista</label>
+            <input
+              type="text"
+              id="code"
+              name="code"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: MTR12345"
+            />
+          </div>
+          <button
+            type="submit"
+            id="submitButton"
+            class="w-full py-3 px-4 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+          >
+            Adicionar Motorista
+          </button>
+          <button
+            type="button"
+            id="cancelEditButton"
+            class="w-full py-3 px-4 mt-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 hidden"
+            onclick="resetForm()"
+          >
+            Cancelar Edição
+          </button>
+        </form>
+        <p id="message" class="mt-4 text-center text-sm font-medium hidden"></p>
+      </div>
+
+      <!-- Lista de Motoristas Cadastrados -->
+      <div class="max-w-4xl mx-auto mt-8">
+        <h3 class="text-xl font-bold text-yellow-800 dark:text-white mb-4 text-center">
+          Motoristas Cadastrados
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <thead>
+              <tr class="bg-yellow-500 text-white">
+                <th class="py-3 px-4 text-left">Nome</th>
+                <th class="py-3 px-4 text-left hidden sm:table-cell">Email</th>
+                <th class="py-3 px-4 text-left hidden md:table-cell">CPF</th>
+                <th class="py-3 px-4 text-left hidden lg:table-cell">CNH</th>
+                <th class="py-3 px-4 text-left hidden sm:table-cell">Linha</th>
+                <th class="py-3 px-4 text-left">Código</th>
+                <th class="py-3 px-4 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="driversTableBody">
+              <!-- Os motoristas serão inseridos aqui dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noDriversMessage" class="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 px-4 py-3 rounded-lg text-center mt-4 hidden">
+          Nenhum motorista cadastrado ainda.
+        </div>
+      </div>
+    </main>
+
+    <script>
+      feather.replace();
+
+      // Variável para armazenar o ID do motorista em edição
+      let editingDriverId = null;
+
+      // Função de Logout (reutilizada do dashboard)
+      async function logout() {
+        try {
+          await fetch("/api/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+          window.location.href = "index.html";
+        } catch (error) {
+          console.error("Erro ao fazer logout:", error);
+          window.location.href = "index.html"; // Redireciona mesmo em caso de erro
+        }
+      }
+
+      // Função para verificar o status de admin e redirecionar se não for
+      async function checkAdminStatus() {
+        try {
+          const response = await fetch("/api/profile", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.status === 401) {
+            // Não autenticado
+            window.location.href = "login.html";
+            return;
+          }
+
+          const user = await response.json();
+          if (user.role !== 'admin') {
+            // Não é admin, redireciona para o dashboard
+            window.location.href = "dashboard.html";
+          }
+        } catch (error) {
+          console.error("Erro ao verificar status de admin:", error);
+          window.location.href = "login.html"; // Em caso de erro, força o login
+        }
+      }
+
+      // Função para carregar e exibir motoristas
+      async function loadDrivers() {
+        try {
+          const response = await fetch('/api/admin/drivers', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao carregar motoristas');
+          }
+
+          const drivers = await response.json();
+          displayDrivers(drivers);
+        } catch (error) {
+          console.error('Erro ao carregar motoristas:', error);
+          document.getElementById('driversTableBody').innerHTML = '';
+          document.getElementById('noDriversMessage').classList.remove('hidden');
+        }
+      }
+
+      // Função para exibir motoristas na tabela
+      function displayDrivers(drivers) {
+        const driversTableBody = document.getElementById('driversTableBody');
+        const noDriversMessage = document.getElementById('noDriversMessage');
+        driversTableBody.innerHTML = '';
+        
+        if (!drivers || drivers.length === 0) {
+          noDriversMessage.classList.remove('hidden');
+          return;
+        }
+
+        noDriversMessage.classList.add('hidden');
+
+        drivers.forEach(driver => {
+          const row = driversTableBody.insertRow();
+          row.className = 'border-b border-yellow-100 dark:border-gray-700 hover:bg-yellow-50 dark:hover:bg-gray-700 transition';
+          
+          row.innerHTML = `
+            <td class="py-3 px-4 text-yellow-800 dark:text-white">${driver.name}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden sm:table-cell">${driver.email}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden md:table-cell">${driver.cpf}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden lg:table-cell">${driver.cnh}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden sm:table-cell">${driver.bus_line}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300">${driver.code}</td>
+            <td class="py-3 px-4 text-center">
+              <button
+                onclick="editDriver('${driver.id}')"
+                class="p-1 text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition mr-2"
+                title="Editar motorista"
+              >
+                <i data-feather="edit" class="w-5 h-5"></i>
+              </button>
+              <button
+                onclick="deleteDriver('${driver.id}')"
+                class="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg transition"
+                title="Remover motorista"
+              >
+                <i data-feather="trash-2" class="w-5 h-5"></i>
+              </button>
+            </td>
+          `;
+        });
+
+        // Atualiza os ícones do Feather
+        feather.replace();
+      }
+
+      // Função para preencher o formulário para edição
+      async function editDriver(driverId) {
+        try {
+          const response = await fetch(`/api/admin/drivers/${driverId}`, {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados do motorista para edição');
+          }
+
+          const driver = await response.json();
+          
+          // Preenche o formulário
+          document.getElementById('driverId').value = driver.id;
+          document.getElementById('name').value = driver.name;
+          document.getElementById('email').value = driver.email;
+          document.getElementById('cpf').value = driver.cpf;
+          document.getElementById('cnh').value = driver.cnh;
+          // Seleciona a opção correta no dropdown
+          const busLineSelect = document.getElementById('bus_line');
+          let found = false;
+          for (let i = 0; i < busLineSelect.options.length; i++) {
+            if (busLineSelect.options[i].value === driver.bus_line) {
+              busLineSelect.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            // Se a linha não estiver na lista (ex: linha desativada), adiciona temporariamente
+            const option = document.createElement('option');
+            option.value = driver.bus_line;
+            option.textContent = driver.bus_line;
+            busLineSelect.appendChild(option);
+            busLineSelect.value = driver.bus_line;
+          }
+          document.getElementById('code').value = driver.code;
+
+          // Altera o estado do formulário para edição
+          editingDriverId = driver.id;
+          document.getElementById('formSubtitle').textContent = 'Editar Motorista';
+          document.getElementById('submitButton').textContent = 'Salvar Alterações';
+          document.getElementById('cancelEditButton').classList.remove('hidden');
+          document.getElementById('message').classList.add('hidden');
+          
+          // Rola para o topo para focar no formulário
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        } catch (error) {
+          console.error('Erro ao editar motorista:', error);
+          alert('Erro ao carregar dados do motorista para edição.');
+        }
+      }
+
+      // Função para resetar o formulário para o estado de adição
+      function resetForm() {
+        editingDriverId = null;
+        document.getElementById('driverForm').reset();
+        document.getElementById('driverId').value = '';
+        document.getElementById('formSubtitle').textContent = 'Cadastro de Novo Motorista';
+        document.getElementById('submitButton').textContent = 'Adicionar Motorista';
+        document.getElementById('cancelEditButton').classList.add('hidden');
+        document.getElementById('message').classList.add('hidden');
+      }
+
+      // Função para deletar motorista
+      async function deleteDriver(driverId) {
+        if (!confirm('Tem certeza que deseja remover este motorista?')) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/admin/drivers/${driverId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+
+          const messageElement = document.getElementById('message');
+          messageElement.classList.remove('hidden', 'text-green-600', 'text-red-600');
+
+          if (response.ok) {
+            // Recarrega a lista de motoristas
+            loadDrivers();
+            
+            messageElement.textContent = 'Motorista removido com sucesso!';
+            messageElement.classList.add('text-green-600');
+            
+            setTimeout(() => {
+              messageElement.classList.add('hidden');
+            }, 3000);
+          } else {
+            const data = await response.json();
+            messageElement.textContent = data.error || 'Erro ao remover motorista.';
+            messageElement.classList.add('text-red-600');
+          }
+        } catch (error) {
+          console.error('Erro ao remover motorista:', error);
+          alert('Erro de conexão com o servidor.');
+        }
+      }
+
+      // Função para enviar o formulário (Adicionar ou Editar)
+      document.getElementById('driverForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const driverId = document.getElementById('driverId').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const cpf = document.getElementById('cpf').value;
+        const cnh = document.getElementById('cnh').value;
+        const bus_line = document.getElementById('bus_line').value;
+        const code = document.getElementById('code').value;
+        const messageElement = document.getElementById('message');
+
+        messageElement.classList.add('hidden');
+        messageElement.classList.remove('text-green-600', 'text-red-600');
+
+        const method = driverId ? 'PUT' : 'POST';
+        const url = driverId ? `/api/admin/drivers/${driverId}` : '/api/admin/drivers';
+
+        try {
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ name, email, cpf, cnh, bus_line, code })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            messageElement.textContent = data.message;
+            messageElement.classList.add('text-green-600');
+            
+            resetForm(); // Limpa e reseta o formulário
+            loadDrivers(); // Recarrega a lista de motoristas
+          } else {
+            messageElement.textContent = data.error || `Erro ao ${driverId ? 'editar' : 'adicionar'} motorista.`;
+            messageElement.classList.add('text-red-600');
+          }
+        } catch (error) {
+          console.error('Erro ao enviar formulário:', error);
+          messageElement.textContent = 'Erro de conexão com o servidor.';
+          messageElement.classList.add('text-red-600');
+        } finally {
+          messageElement.classList.remove('hidden');
+        }
+      });
+
+      // Função para carregar as linhas de ônibus e preencher o dropdown
+      async function loadBusLines() {
+        try {
+          const response = await fetch('/api/routes', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao carregar linhas de ônibus');
+          }
+
+          const busLines = await response.json();
+          const selectElement = document.getElementById('bus_line');
+          
+          // Limpa as opções existentes, mantendo a primeira (Selecione a Linha)
+          selectElement.innerHTML = '<option value="">Selecione a Linha</option>';
+
+          busLines.forEach(line => {
+            const option = document.createElement('option');
+            // O valor da linha será a combinação do número e nome para facilitar a visualização
+            const lineValue = `${line.route_number} - ${line.route_name}`;
+            option.value = lineValue;
+            option.textContent = lineValue;
+            selectElement.appendChild(option);
+          });
+
+        } catch (error) {
+          console.error('Erro ao carregar linhas de ônibus:', error);
+          // Opcional: Exibir mensagem de erro no formulário
+        }
+      }
+
+      // Inicialização
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAdminStatus();
+        loadBusLines(); // Carrega as linhas de ônibus
+        loadDrivers(); // Carrega a lista de motoristas ao carregar a página
+      });
+    </script>
+  </body>
+</html>

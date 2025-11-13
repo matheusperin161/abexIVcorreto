@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobilidade Urbana - Sistema Inteligente de Transporte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .hero-gradient {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      }
+      
+      .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(251, 191, 36, 0.3);
+      }
+      
+      .icon-wrapper {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        transition: all 0.3s ease;
+      }
+      
+      .feature-card:hover .icon-wrapper {
+        transform: rotate(360deg) scale(1.1);
+      }
+      
+      .dark .feature-card {
+        background: rgba(45, 55, 72, 0.95);
+      }
+      
+      .dark .hero-gradient {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      }
+      
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-yellow-50 via-orange-50 to-yellow-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen">
+    <!-- Particles Background -->
+    <div id="particles" class="fixed inset-0 -z-10 overflow-hidden"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-lg z-50 transition-all">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-3 animate-slide-left">
+            <div class="bg-gradient-to-br from-yellow-400 to-orange-500 p-2 rounded-xl shadow-lg">
+              <i data-feather="bus" class="w-8 h-8 text-white"></i>
+            </div>
+            <div>
+              <h1 class="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                Mobilidade Urbana
+              </h1>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Sistema Inteligente</p>
+            </div>
+          </div>
+          <div class="flex space-x-3 animate-slide-right">
+            <button
+              onclick="window.location.href='login.html'"
+              class="px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-xl hover-lift font-medium shadow-lg"
+            >
+              <span class="flex items-center space-x-2">
+                <i data-feather="log-in" class="w-4 h-4"></i>
+                <span>Login</span>
+              </span>
+            </button>
+            <button
+              onclick="window.location.href='register.html'"
+              class="px-6 py-2.5 bg-white dark:bg-gray-800 text-yellow-600 dark:text-yellow-400 rounded-xl hover-lift font-medium shadow-lg border-2 border-yellow-400"
+            >
+              Cadastre-se
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="pt-24 pb-20">
+      <div class="container mx-auto px-4">
+        <!-- Hero Content -->
+        <div class="text-center mb-16 animate-fade-in">
+          <div class="inline-block mb-4">
+            <span class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full text-sm font-semibold">
+              🚀 Nova Geração de Mobilidade
+            </span>
+          </div>
+          <h2 class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            Transforme sua
+            <span class="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              Experiência
+            </span>
+            <br />de Transporte Público
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Acompanhe ônibus em tempo real, planeje suas rotas com inteligência e gerencie seu cartão de transporte de forma simples e moderna.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onclick="window.location.href='register.html'"
+              class="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl hover-lift font-bold text-lg shadow-2xl btn-modern group"
+            >
+              <span class="flex items-center space-x-2">
+                <span>Começar Agora</span>
+                <i data-feather="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+              </span>
+            </button>
+            <button
+              onclick="window.location.href='login.html'"
+              class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-2xl hover-lift font-bold text-lg shadow-xl"
+            >
+              Já tenho conta
+            </button>
+          </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" data-aos="fade-up" data-aos-delay="200">
+          <!-- Feature 1 -->
+          <div class="feature-card rounded-3xl p-8 shadow-xl">
+            <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <i data-feather="credit-card" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Recarga Digital
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              Recarregue seu cartão de transporte de forma rápida, segura e sem filas. Acompanhe seu saldo em tempo real.
+            </p>
+            <button
+              onclick="window.location.href='login.html'"
+              class="text-yellow-600 dark:text-yellow-400 font-semibold flex items-center space-x-2 group"
+            >
+              <span>Saiba mais</span>
+              <i data-feather="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card rounded-3xl p-8 shadow-xl" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <i data-feather="map-pin" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Rastreamento ao Vivo
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              Veja a localização exata dos ônibus em tempo real e saiba quando o próximo chegará ao seu ponto.
+            </p>
+            <button
+              onclick="window.location.href='login.html'"
+              class="text-yellow-600 dark:text-yellow-400 font-semibold flex items-center space-x-2 group"
+            >
+              <span>Saiba mais</span>
+              <i data-feather="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card rounded-3xl p-8 shadow-xl" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <i data-feather="navigation" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Rotas Inteligentes
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              Planeje sua viagem com sugestões de rotas otimizadas e economize tempo no seu deslocamento diário.
+            </p>
+            <button
+              onclick="window.location.href='login.html'"
+              class="text-yellow-600 dark:text-yellow-400 font-semibold flex items-center space-x-2 group"
+            >
+              <span>Saiba mais</span>
+              <i data-feather="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl p-12 shadow-2xl mb-16" data-aos="fade-up">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
+            <div class="animate-scale-in">
+              <div class="text-5xl font-bold mb-2">10k+</div>
+              <div class="text-lg opacity-90">Usuários Ativos</div>
+            </div>
+            <div class="animate-scale-in" style="animation-delay: 0.1s">
+              <div class="text-5xl font-bold mb-2">50+</div>
+              <div class="text-lg opacity-90">Rotas Monitoradas</div>
+            </div>
+            <div class="animate-scale-in" style="animation-delay: 0.2s">
+              <div class="text-5xl font-bold mb-2">24/7</div>
+              <div class="text-lg opacity-90">Suporte Disponível</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center bg-white dark:bg-gray-800 rounded-3xl p-12 shadow-xl" data-aos="fade-up">
+          <h3 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Pronto para começar?
+          </h3>
+          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Junte-se a milhares de usuários que já estão transformando sua experiência de mobilidade urbana.
+          </p>
+          <button
+            onclick="window.location.href='register.html'"
+            class="px-10 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl hover-lift font-bold text-lg shadow-2xl btn-modern"
+          >
+            Criar Conta Gratuita
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-gray-600 dark:text-gray-400">
+          © 2024 Mobilidade Urbana. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+      
+      // Initialize Feather Icons
+      feather.replace();
+
+      // Particles Animation
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          
+          const size = Math.random() * 4 + 2;
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          const duration = Math.random() * 20 + 10;
+          const delay = Math.random() * 5;
+          
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${x}%`;
+          particle.style.top = `${y}%`;
+          particle.style.background = `rgba(251, 191, 36, ${Math.random() * 0.5 + 0.2})`;
+          particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+      
+      createParticles();
+
+      // Theme handling
+      function applyTheme(isDark) {
+        const html = document.documentElement;
+        if (isDark) {
+          html.classList.add('dark');
+          html.classList.remove('light');
+        } else {
+          html.classList.remove('dark');
+          html.classList.add('light');
+        }
+        feather.replace();
+      }
+
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let isDark = savedTheme === 'dark' || (savedTheme === null && prefersDark);
+      applyTheme(isDark);
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Header scroll effect
+      let lastScroll = 0;
+      const header = document.querySelector('header');
+      
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > lastScroll && currentScroll > 100) {
+          header.style.transform = 'translateY(-100%)';
+        } else {
+          header.style.transform = 'translateY(0)';
+        }
+        
+        lastScroll = currentScroll;
+      });
+    </script>
+  </body>
+</html>

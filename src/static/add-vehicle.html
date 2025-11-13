@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Frota - Mobilidade Urbana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+    <style>
+      /* Estilos para o tema escuro */
+      .dark .bg-yellow-50 {
+        background-color: #1a202c; /* Cinza escuro */
+      }
+      .dark .bg-white {
+        background-color: #2d3748;
+      }
+      .dark .text-yellow-800 {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-600 {
+        color: #a0aec0; /* Cinza claro */
+      }
+      .dark .border-yellow-200 {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .placeholder-gray-500::placeholder {
+        color: #a0aec0;
+      }
+    </style>
+  </head>
+  <body class="bg-yellow-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-yellow-500 text-white shadow-lg">
+      <div
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <i data-feather="truck" class="w-8 h-8"></i>
+          <h1 class="text-2xl font-bold" id="formTitle">Gerenciar Frota</h1>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            onclick="window.location.href='dashboard.html'"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Voltar para Dashboard"
+          >
+            <i data-feather="arrow-left" class="w-6 h-6"></i>
+          </button>
+          <!-- <button
+            onclick="logout()"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Sair"
+          >
+            <i data-feather="log-out" class="w-6 h-6"></i>
+          </button> -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+      <div class="max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden p-8">
+        <h2 class="text-2xl font-bold text-yellow-800 dark:text-white mb-6 text-center" id="formSubtitle">
+          Cadastro de Novo Veículo
+        </h2>
+        <form id="vehicleForm">
+          <input type="hidden" id="vehicleId" name="vehicleId" value="">
+          
+          <div class="mb-4">
+            <label for="plate" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Placa</label>
+            <input
+              type="text"
+              id="plate"
+              name="plate"
+              required
+              maxlength="10"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: ABC-1234"
+            />
+          </div>
+          
+          <div class="mb-4">
+            <label for="brand" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Marca</label>
+            <input
+              type="text"
+              id="brand"
+              name="brand"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: Mercedes-Benz"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="model" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Modelo</label>
+            <input
+              type="text"
+              id="model"
+              name="model"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: O-500M"
+            />
+          </div>
+          
+          <div class="mb-4">
+            <label for="year" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Ano</label>
+            <input
+              type="number"
+              id="year"
+              name="year"
+              required
+              min="1900"
+              max="2100"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: 2020"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="capacity" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Capacidade (Passageiros)</label>
+            <input
+              type="number"
+              id="capacity"
+              name="capacity"
+              required
+              min="1"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+              placeholder="Ex: 45"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="status" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Status</label>
+            <select
+              id="status"
+              name="status"
+              required
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+            >
+              <option value="ativo">Ativo (Pronto para Uso)</option>
+              <option value="inativo">Inativo</option>
+              <option value="manutencao">Manutenção</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="bus_line" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Linha do Ônibus</label>
+            <select
+              id="bus_line"
+              name="bus_line"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+            >
+              <option value="">Selecione a Linha</option>
+            </select>
+          </div>
+
+          <div class="mb-6">
+            <label for="driver_id" class="block text-sm font-medium text-yellow-800 dark:text-yellow-600 mb-1">Motorista</label>
+            <select
+              id="driver_id"
+              name="driver_id"
+              class="w-full px-4 py-2 border border-yellow-200 dark:border-gray-600 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white placeholder-gray-500"
+            >
+              <option value="">Selecione o Motorista</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            id="submitButton"
+            class="w-full py-3 px-4 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+          >
+            Adicionar Veículo
+          </button>
+          <button
+            type="button"
+            id="cancelEditButton"
+            class="w-full py-3 px-4 mt-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 hidden"
+            onclick="resetForm()"
+          >
+            Cancelar Edição
+          </button>
+        </form>
+        <p id="message" class="mt-4 text-center text-sm font-medium hidden"></p>
+      </div>
+
+      <!-- Lista de Veículos Cadastrados -->
+      <div class="max-w-6xl mx-auto mt-8">
+        <h3 class="text-xl font-bold text-yellow-800 dark:text-white mb-4 text-center">
+          Frota Cadastrada
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <thead>
+              <tr class="bg-yellow-500 text-white">
+                <th class="py-3 px-4 text-left">Placa</th>
+                <th class="py-3 px-4 text-left hidden sm:table-cell">Marca</th>
+                <th class="py-3 px-4 text-left hidden sm:table-cell">Modelo</th>
+                <th class="py-3 px-4 text-left hidden md:table-cell">Ano</th>
+                <th class="py-3 px-4 text-left hidden lg:table-cell">Capacidade</th>
+                <th class="py-3 px-4 text-left hidden xl:table-cell">Linha</th>
+                <th class="py-3 px-4 text-left hidden xl:table-cell">Motorista</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="vehiclesTableBody">
+              <!-- Os veículos serão inseridos aqui dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noVehiclesMessage" class="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 px-4 py-3 rounded-lg text-center mt-4 hidden">
+          Nenhum veículo cadastrado ainda.
+        </div>
+      </div>
+    </main>
+
+    <script>
+      feather.replace();
+
+      // Variável para armazenar o ID do veículo em edição
+      let editingVehicleId = null;
+
+      // Função de Logout (reutilizada do dashboard)
+      async function logout() {
+        try {
+          await fetch("/api/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+          window.location.href = "index.html";
+        } catch (error) {
+          console.error("Erro ao fazer logout:", error);
+          window.location.href = "index.html"; // Redireciona mesmo em caso de erro
+        }
+      }
+
+      // Função para verificar o status de admin e redirecionar se não for
+      async function checkAdminStatus() {
+        try {
+          const response = await fetch("/api/profile", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.status === 401) {
+            // Não autenticado
+            window.location.href = "login.html";
+            return;
+          }
+
+          const user = await response.json();
+          if (user.role !== 'admin') {
+            // Não é admin, redireciona para o dashboard
+            window.location.href = "dashboard.html";
+          }
+        } catch (error) {
+          console.error("Erro ao verificar status de admin:", error);
+          window.location.href = "login.html"; // Em caso de erro, força o login
+        }
+      }
+
+      // Função para carregar e exibir veículos
+      async function loadVehicles() {
+        try {
+          const response = await fetch('/api/admin/vehicles', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao carregar veículos');
+          }
+
+          const vehicles = await response.json();
+          displayVehicles(vehicles);
+        } catch (error) {
+          console.error('Erro ao carregar veículos:', error);
+          document.getElementById('vehiclesTableBody').innerHTML = '';
+          document.getElementById('noVehiclesMessage').classList.remove('hidden');
+        }
+      }
+
+      // Função para exibir veículos na tabela
+      function displayVehicles(vehicles) {
+        const vehiclesTableBody = document.getElementById('vehiclesTableBody');
+        const noVehiclesMessage = document.getElementById('noVehiclesMessage');
+        vehiclesTableBody.innerHTML = '';
+        
+        if (!vehicles || vehicles.length === 0) {
+          noVehiclesMessage.classList.remove('hidden');
+          return;
+        }
+
+        noVehiclesMessage.classList.add('hidden');
+
+        vehicles.forEach(vehicle => {
+          let statusColor = '';
+          let statusText = '';
+          switch (vehicle.status) {
+            case 'ativo':
+              statusColor = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+              statusText = 'Ativo';
+              break;
+            case 'inativo':
+              statusColor = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+              statusText = 'Inativo';
+              break;
+            case 'manutencao':
+              statusColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+              statusText = 'Manutenção';
+              break;
+            default:
+              statusColor = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+              statusText = vehicle.status;
+          }
+
+          const row = vehiclesTableBody.insertRow();
+          row.className = 'border-b border-yellow-100 dark:border-gray-700 hover:bg-yellow-50 dark:hover:bg-gray-700 transition';
+          
+          row.innerHTML = `
+            <td class="py-3 px-4 font-semibold text-yellow-800 dark:text-white">${vehicle.plate}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden sm:table-cell">${vehicle.brand}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden sm:table-cell">${vehicle.model}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden md:table-cell">${vehicle.year}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden lg:table-cell">${vehicle.capacity}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden xl:table-cell">${vehicle.bus_line || '-'}</td>
+            <td class="py-3 px-4 text-gray-700 dark:text-gray-300 hidden xl:table-cell">${vehicle.driver_name || '-'}</td>
+            <td class="py-3 px-4">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor}">
+                ${statusText}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-center">
+              <button
+                onclick="editVehicle('${vehicle.id}')"
+                class="p-1 text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition mr-2"
+                title="Editar veículo"
+              >
+                <i data-feather="edit" class="w-5 h-5"></i>
+              </button>
+              <button
+                onclick="deleteVehicle('${vehicle.id}')"
+                class="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg transition"
+                title="Remover veículo"
+              >
+                <i data-feather="trash-2" class="w-5 h-5"></i>
+              </button>
+            </td>
+          `;
+        });
+
+        // Atualiza os ícones do Feather
+        feather.replace();
+      }
+
+      // Função para preencher o formulário para edição
+      async function editVehicle(vehicleId) {
+        try {
+          const response = await fetch(`/api/admin/vehicles/${vehicleId}`, {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados do veículo para edição');
+          }
+
+          const vehicle = await response.json();
+          
+          // Preenche o formulário
+          document.getElementById('vehicleId').value = vehicle.id;
+          document.getElementById('plate').value = vehicle.plate;
+          document.getElementById('brand').value = vehicle.brand;
+          document.getElementById('model').value = vehicle.model;
+          document.getElementById('year').value = vehicle.year;
+          document.getElementById('capacity').value = vehicle.capacity;
+          document.getElementById('status').value = vehicle.status;
+          
+          // Preencher linha e motorista se existirem
+          if (vehicle.bus_line) {
+            document.getElementById('bus_line').value = vehicle.bus_line;
+          }
+          if (vehicle.driver_id) {
+            document.getElementById('driver_id').value = vehicle.driver_id;
+          }
+
+          // Altera o estado do formulário para edição
+          editingVehicleId = vehicle.id;
+          document.getElementById('formSubtitle').textContent = 'Editar Veículo';
+          document.getElementById('submitButton').textContent = 'Salvar Alterações';
+          document.getElementById('cancelEditButton').classList.remove('hidden');
+          document.getElementById('message').classList.add('hidden');
+          
+          // Rola para o topo para focar no formulário
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        } catch (error) {
+          console.error('Erro ao editar veículo:', error);
+          alert('Erro ao carregar dados do veículo para edição.');
+        }
+      }
+
+      // Função para resetar o formulário para o estado de adição
+      function resetForm() {
+        editingVehicleId = null;
+        document.getElementById('vehicleForm').reset();
+        document.getElementById('vehicleId').value = '';
+        document.getElementById('formSubtitle').textContent = 'Cadastro de Novo Veículo';
+        document.getElementById('submitButton').textContent = 'Adicionar Veículo';
+        document.getElementById('cancelEditButton').classList.add('hidden');
+        document.getElementById('message').classList.add('hidden');
+      }
+
+      // Função para deletar veículo
+      async function deleteVehicle(vehicleId) {
+        if (!confirm('Tem certeza que deseja remover este veículo?')) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/admin/vehicles/${vehicleId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+
+          const messageElement = document.getElementById('message');
+          messageElement.classList.remove('hidden', 'text-green-600', 'text-red-600');
+
+          if (response.ok) {
+            // Recarrega a lista de veículos
+            loadVehicles();
+            
+            messageElement.textContent = 'Veículo removido com sucesso!';
+            messageElement.classList.add('text-green-600');
+            
+            setTimeout(() => {
+              messageElement.classList.add('hidden');
+            }, 3000);
+          } else {
+            const data = await response.json();
+            messageElement.textContent = data.error || 'Erro ao remover veículo.';
+            messageElement.classList.add('text-red-600');
+          }
+        } catch (error) {
+          console.error('Erro ao remover veículo:', error);
+          alert('Erro de conexão com o servidor.');
+        }
+      }
+
+      // Função para enviar o formulário (Adicionar ou Editar)
+      document.getElementById('vehicleForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const vehicleId = document.getElementById('vehicleId').value;
+        const plate = document.getElementById('plate').value;
+        const model = document.getElementById('model').value;
+        const brand = document.getElementById('brand').value;
+        const year = document.getElementById('year').value;
+        const capacity = document.getElementById('capacity').value;
+        const status = document.getElementById('status').value;
+        const bus_line = document.getElementById('bus_line').value;
+        const driver_id = document.getElementById('driver_id').value;
+        const messageElement = document.getElementById('message');
+
+        messageElement.classList.add('hidden');
+        messageElement.classList.remove('text-green-600', 'text-red-600');
+
+        const method = vehicleId ? 'PUT' : 'POST';
+        const url = vehicleId ? `/api/admin/vehicles/${vehicleId}` : '/api/admin/vehicles';
+
+        try {
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ plate, model, brand, year, capacity, status, bus_line, driver_id: driver_id || null })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            messageElement.textContent = data.message;
+            messageElement.classList.add('text-green-600');
+            
+            resetForm(); // Limpa e reseta o formulário
+            loadVehicles(); // Recarrega a lista de veículos
+          } else {
+            messageElement.textContent = data.error || `Erro ao ${vehicleId ? 'editar' : 'adicionar'} veículo.`;
+            messageElement.classList.add('text-red-600');
+          }
+        } catch (error) {
+          console.error('Erro ao enviar formulário:', error);
+          messageElement.textContent = 'Erro de conexão com o servidor.';
+          messageElement.classList.add('text-red-600');
+        } finally {
+          messageElement.classList.remove('hidden');
+        }
+      });
+
+      // Função para carregar as linhas de ônibus e preencher o dropdown
+      async function loadBusLines() {
+        try {
+          const response = await fetch('/api/routes', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao carregar linhas de ônibus');
+          }
+
+          const busLines = await response.json();
+          const selectElement = document.getElementById('bus_line');
+          
+          // Limpa as opções existentes, mantendo a primeira (Selecione a Linha)
+          selectElement.innerHTML = '<option value="">Selecione a Linha</option>';
+
+          busLines.forEach(line => {
+            const option = document.createElement('option');
+            const lineValue = `${line.route_number} - ${line.route_name}`;
+            option.value = lineValue;
+            option.textContent = lineValue;
+            selectElement.appendChild(option);
+          });
+
+        } catch (error) {
+          console.error('Erro ao carregar linhas de ônibus:', error);
+        }
+      }
+
+      // Função para carregar os motoristas e preencher o dropdown
+      async function loadDrivers() {
+        try {
+          const response = await fetch('/api/admin/drivers', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao carregar motoristas');
+          }
+
+          const drivers = await response.json();
+          const selectElement = document.getElementById('driver_id');
+          
+          // Limpa as opções existentes, mantendo a primeira (Selecione o Motorista)
+          selectElement.innerHTML = '<option value="">Selecione o Motorista</option>';
+
+          drivers.forEach(driver => {
+            const option = document.createElement('option');
+            option.value = driver.id;
+            option.textContent = `${driver.name} - ${driver.bus_line}`;
+            selectElement.appendChild(option);
+          });
+
+        } catch (error) {
+          console.error('Erro ao carregar motoristas:', error);
+        }
+      }
+
+      // Inicialização
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAdminStatus();
+        loadBusLines(); // Carrega as linhas de ônibus
+        loadDrivers(); // Carrega os motoristas
+        loadVehicles(); // Carrega a lista de veículos ao carregar a página
+      });
+    </script>
+  </body>
+</html>

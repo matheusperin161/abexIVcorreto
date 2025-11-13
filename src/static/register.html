@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro - Mobilidade Urbana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .register-container {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+      }
+      
+      .dark .register-container {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      }
+      
+      .register-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+      
+      .dark .register-card {
+        background: #1e293b;
+      }
+      
+      .register-side {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.9)),
+                    url('./img/BuszApp_cadastro_448x697.png');
+        background-size: cover;
+        background-position: center;
+      }
+      
+      .dark .register-side {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)),
+                    url('./img/BuszApp_cadastro_448x697.png');
+        background-size: cover;
+        background-position: center;
+      }
+      
+      .input-group {
+        position: relative;
+        margin-bottom: 1.25rem;
+      }
+      
+      .input-group input {
+        width: 100%;
+        padding: 12px 14px 12px 44px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #f9fafb;
+      }
+      
+      .dark .input-group input {
+        background: #0f172a;
+        border-color: #334155;
+        color: #f1f5f9;
+      }
+      
+      .input-group input:focus {
+        outline: none;
+        border-color: #fbbf24;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+        transform: translateY(-1px);
+      }
+      
+      .dark .input-group input:focus {
+        background: #1e293b;
+      }
+      
+      .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        pointer-events: none;
+      }
+      
+      .btn-register {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+      }
+      
+      .btn-register:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      .strength-meter {
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 2px;
+        margin-top: 8px;
+        overflow: hidden;
+      }
+      
+      .strength-bar {
+        height: 100%;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="register-card max-w-5xl w-full mx-4 animate-scale-in" style="max-width: 1000px;">
+        <div class="md:flex">
+          <!-- Left Side - Decorative -->
+          <div class="register-side md:w-2/5 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+            <div class="relative z-10 text-center">
+              <div class="mb-6 animate-float">
+                <div class="bg-white/20 backdrop-blur-lg p-6 rounded-3xl inline-block">
+                  <i data-feather="user-plus" class="w-20 h-20"></i>
+                </div>
+              </div>
+              <h2 class="text-3xl font-bold mb-4">Junte-se a nós!</h2>
+              <p class="text-lg opacity-90">
+                Crie sua conta e comece a aproveitar todos os benefícios da mobilidade urbana inteligente.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Right Side - Form -->
+          <div class="md:w-3/5 p-8 md:p-12 relative z-10">
+            <div class="max-w-md mx-auto">
+              <div class="mb-6">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  Crie sua conta
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Preencha os dados abaixo para começar
+                </p>
+              </div>
+
+              <form id="registerForm">
+                <div
+                  id="errorMessage"
+                  class="hidden mb-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl animate-fade-in"
+                ></div>
+                <div
+                  id="successMessage"
+                  class="hidden mb-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-3 rounded-xl animate-fade-in"
+                ></div>
+
+                <div class="input-group">
+                  <i data-feather="user" class="input-icon w-5 h-5"></i>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    required
+                    placeholder="Nome de usuário"
+                  />
+                </div>
+
+                <div class="input-group">
+                  <i data-feather="mail" class="input-icon w-5 h-5"></i>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="seu@email.com"
+                  />
+                </div>
+
+                <div class="input-group">
+                  <i data-feather="lock" class="input-icon w-5 h-5"></i>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Senha"
+                  />
+                  <div class="strength-meter">
+                    <div class="strength-bar" id="strengthBar"></div>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <i data-feather="lock" class="input-icon w-5 h-5"></i>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    required
+                    placeholder="Confirme sua senha"
+                  />
+                </div>
+
+                <div class="flex items-start mb-6">
+                  <input
+                    id="terms"
+                    name="terms"
+                    type="checkbox"
+                    required
+                    class="mt-1 w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
+                  />
+                  <label for="terms" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                    Eu concordo com os
+                    <a href="#" class="text-yellow-600 dark:text-yellow-400 hover:underline font-medium">
+                      Termos de Serviço
+                    </a>
+                    e
+                    <a href="#" class="text-yellow-600 dark:text-yellow-400 hover:underline font-medium">
+                      Política de Privacidade
+                    </a>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  id="registerButton"
+                  class="btn-register mb-6"
+                >
+                  <span id="registerButtonText">Cadastrar</span>
+                </button>
+              </form>
+
+              <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                    Já tem uma conta?
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-center">
+                <a
+                  href="login.html"
+                  class="font-semibold text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition"
+                >
+                  Faça login aqui
+                </a>
+              </p>
+
+              <div class="mt-6 text-center">
+                <a
+                  href="index.html"
+                  class="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
+                >
+                  <i data-feather="arrow-left" class="w-4 h-4"></i>
+                  <span>Voltar para home</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+
+      // Password strength meter
+      const passwordInput = document.getElementById("password");
+      const strengthBar = document.getElementById("strengthBar");
+
+      passwordInput.addEventListener("input", function() {
+        const password = this.value;
+        let strength = 0;
+        
+        if (password.length >= 6) strength += 25;
+        if (password.length >= 10) strength += 25;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+        if (/\d/.test(password)) strength += 25;
+        
+        strengthBar.style.width = strength + "%";
+        
+        if (strength <= 25) {
+          strengthBar.style.background = "#ef4444";
+        } else if (strength <= 50) {
+          strengthBar.style.background = "#f59e0b";
+        } else if (strength <= 75) {
+          strengthBar.style.background = "#eab308";
+        } else {
+          strengthBar.style.background = "#10b981";
+        }
+      });
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          const errorDiv = document.getElementById("errorMessage");
+          const successDiv = document.getElementById("successMessage");
+          const registerButton = document.getElementById("registerButton");
+          const registerButtonText = document.getElementById("registerButtonText");
+
+          // Limpar mensagens
+          errorDiv.classList.add("hidden");
+          successDiv.classList.add("hidden");
+
+          // Validar senhas
+          if (password !== confirmPassword) {
+            errorDiv.textContent = "As senhas não coincidem";
+            errorDiv.classList.remove("hidden");
+            return;
+          }
+
+          // Desabilitar botão durante o registro
+          registerButton.disabled = true;
+          registerButtonText.textContent = "Cadastrando...";
+          registerButton.classList.add("animate-pulse");
+
+          try {
+            const response = await fetch("/api/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: username,
+                email: email,
+                password: password,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              // Registro bem-sucedido
+              successDiv.textContent = "Cadastro realizado com sucesso! Redirecionando para login...";
+              successDiv.classList.remove("hidden");
+              registerButton.classList.remove("animate-pulse");
+              registerButtonText.textContent = "Sucesso!";
+              registerButton.style.background = "linear-gradient(135deg, #10b981, #059669)";
+
+              // Redirecionar para login após 2 segundos
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 2000);
+            } else {
+              // Mostrar erro
+              errorDiv.textContent = data.error || "Erro ao fazer cadastro";
+              errorDiv.classList.remove("hidden");
+            }
+          } catch (error) {
+            console.error("Erro:", error);
+            errorDiv.textContent = "Erro de conexão. Tente novamente.";
+            errorDiv.classList.remove("hidden");
+          } finally {
+            // Reabilitar botão se houve erro
+            if (!successDiv.classList.contains("hidden")) return;
+            registerButton.disabled = false;
+            registerButtonText.textContent = "Cadastrar";
+            registerButton.classList.remove("animate-pulse");
+            registerButton.style.background = "";
+          }
+        });
+
+      // Theme handling
+      function applyTheme(isDark) {
+        const html = document.documentElement;
+        if (isDark) {
+          html.classList.add('dark');
+          html.classList.remove('light');
+        } else {
+          html.classList.remove('dark');
+          html.classList.add('light');
+        }
+        feather.replace();
+      }
+
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let isDark = savedTheme === 'dark' || (savedTheme === null && prefersDark);
+      applyTheme(isDark);
+    </script>
+  </body>
+</html>

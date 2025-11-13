@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acompanhamento - Mobilidade Urbana</title>
+    <style>
+        #map {
+            height: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+  
+    <style>
+      /* Estilos para o tema escuro */
+      .dark .bg-yellow-50 {
+        background-color: #1a202c; /* Cinza escuro */
+      }
+      .dark .bg-yellow-500 {
+        background-color: #2d3748; /* Cinza um pouco mais claro */
+      }
+      .dark .text-white {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-800 {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-600 {
+        color: #a0aec0; /* Cinza claro */
+      }
+      .dark .bg-white {
+        background-color: #2d3748;
+      }
+      .dark .border-yellow-200 {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .divide-yellow-100 > :not([hidden] ) ~ :not([hidden]) {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .hover\:bg-yellow-50:hover {
+        background-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .bg-yellow-100 {
+        background-color: #4a5568; /* Cinza escuro */
+      }
+    </style>
+  </head>
+  <body class="bg-yellow-50 min-h-screen h-full flex flex-col">
+    <!-- Header -->
+    <header class="bg-yellow-500 text-white shadow-lg">
+      <div
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <i data-feather="bus" class="w-8 h-8"></i>
+          <h1 class="text-2xl font-bold">Acompanhamento de Ônibus</h1>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            onclick="window.location.href='dashboard.html'"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+          >
+            <i data-feather="arrow-left" class="w-6 h-6"></i>
+          </button>
+          <!-- <button
+            onclick="window.location.href='rating.html'"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Avaliação"
+          >
+            <i data-feather="star" class="w-6 h-6"></i>
+          </button>
+          <button
+            onclick="window.location.href='profile.html'"
+            class="p-2 rounded-full hover:bg-yellow-600 transition"
+            title="Perfil"
+          >
+            <i data-feather="user" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div> -->
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container mx-auto px-4 py-8 flex-grow flex flex-col">
+      <div id="linhas-container" class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="p-6 border-b border-yellow-200">
+          <h2 class="text-2xl font-bold text-yellow-800">Linhas disponíveis</h2>
+          <p class="text-yellow-600">
+            Selecione uma linha para acompanhar em tempo real
+          </p>
+        </div>
+
+        <div class="divide-y divide-yellow-100">
+          <!-- Linha 1 -->
+          <div
+            class="p-4 hover:bg-yellow-50 transition cursor-pointer"
+            onclick="showHorarios('01')"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-yellow-800">Linha 01 - Cristo Rei</h3>
+                <p class="text-sm text-yellow-600">
+                  Terminal Urbano de Chapecó
+                </p>
+              </div>
+              <i data-feather="chevron-right" class="text-yellow-500"></i>
+            </div>
+          </div>
+
+          <!-- Linha 2 -->
+          <div
+            class="p-4 hover:bg-yellow-50 transition cursor-pointer"
+            onclick="showHorarios('02')"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-yellow-800">Linha 02 - Tomazelli</h3>
+                <p class="text-sm text-yellow-600">
+                  Terminal Urbano de Chapecó
+                </p>
+              </div>
+              <i data-feather="chevron-right" class="text-yellow-500"></i>
+            </div>
+          </div>
+
+          <!-- Linha 3 -->
+          <div
+            class="p-4 hover:bg-yellow-50 transition cursor-pointer"
+            onclick="showHorarios('03')"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-yellow-800">
+                  Linha 03 - Parque das Palmeiras
+                </h3>
+                <p class="text-sm text-yellow-600">
+                  Terminal Urbano de Chapecó
+                </p>
+              </div>
+              <i data-feather="chevron-right" class="text-yellow-500"></i>
+            </div>
+          </div>
+
+          <!-- Linha 4 -->
+          <div
+            class="p-4 hover:bg-yellow-50 transition cursor-pointer"
+            onclick="showHorarios('04')"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-yellow-800">Linha 04 - Vila Real</h3>
+                <p class="text-sm text-yellow-600">
+                  Terminal Urbano de Chapecó
+                </p>
+              </div>
+              <i data-feather="chevron-right" class="text-yellow-500"></i>
+            </div>
+          </div>
+
+          <!-- Linha 5 -->
+          <div
+            class="p-4 hover:bg-yellow-50 transition cursor-pointer"
+            onclick="showHorarios('05')"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-yellow-800">Linha 05 - Efapi</h3>
+                <p class="text-sm text-yellow-600">
+                  Terminal Urbano de Chapecó
+                </p>
+              </div>
+              <i data-feather="chevron-right" class="text-yellow-500"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horários Modal -->
+      <div
+        id="horariosModal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+      >
+        <div class="bg-white rounded-xl p-6 max-w-md w-full">
+          <div class="flex justify-between items-center mb-4">
+            <h3 id="linhaTitle" class="text-xl font-bold text-yellow-800">
+              Horários - Linha 01
+            </h3>
+            <button
+              onclick="hideHorarios()"
+              class="text-yellow-500 hover:text-yellow-700"
+            >
+              <i data-feather="x"></i>
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div
+              class="p-3 bg-yellow-100 rounded-lg flex justify-between items-center"
+            >
+              <span class="font-medium">06:00</span>
+              <button
+                onclick="acompanharOnibus(1)"
+                class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+              >
+                Acompanhar
+              </button>
+            </div>
+
+            <div
+              class="p-3 bg-yellow-100 rounded-lg flex justify-between items-center"
+            >
+              <span class="font-medium">07:30</span>
+              <button
+                onclick="acompanharOnibus(1)"
+                class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+              >
+                Acompanhar
+              </button>
+            </div>
+
+            <div
+              class="p-3 bg-yellow-100 rounded-lg flex justify-between items-center"
+            >
+              <span class="font-medium">09:00</span>
+              <button
+                onclick="acompanharOnibus(1)"
+                class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+              >
+                Acompanhar
+              </button>
+            </div>
+
+            <div
+              class="p-3 bg-yellow-100 rounded-lg flex justify-between items-center"
+            >
+              <span class="font-medium">10:30</span>
+              <button
+                onclick="acompanharOnibus(1)"
+                class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+              >
+                Acompanhar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </main>
+
+    <!-- Container do Mapa (Inicialmente escondido) -->
+    <div id="map-container" class="hidden flex-grow flex flex-col p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 id="map-title" class="text-2xl font-bold text-gray-800 dark:text-gray-100">Acompanhamento em Tempo Real</h1>
+            <button
+                onclick="voltarParaLinhas()"
+                class="p-2 rounded-full hover:bg-yellow-600 transition bg-yellow-500 text-white"
+                title="Voltar para Linhas"
+            >
+                <i data-feather="arrow-left" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div id="map" class="flex-grow rounded-lg shadow-xl" style="height: 600px;"></div>
+    </div>
+
+    <script>
+      feather.replace();
+
+      function showHorarios(linha) {
+        document.getElementById(
+          "linhaTitle"
+        ).textContent = `Horários - Linha ${linha}`;
+        document.getElementById("horariosModal").classList.remove("hidden");
+      }
+
+      function hideHorarios() {
+        document.getElementById("horariosModal").classList.add("hidden");
+      }
+
+      function acompanharOnibus(busId) {
+        hideHorarios();
+        document.getElementById("main-content").classList.add("hidden");
+        document.getElementById("map-container").classList.remove("hidden");
+        initMap(busId);
+      }
+
+      function voltarParaLinhas() {
+        document.getElementById("main-content").classList.remove("hidden");
+        document.getElementById("map-container").classList.add("hidden");
+      }
+    </script>
+  
+    <script>
+      // Script de inicialização do tema (igual ao profile.html)
+      function applyTheme(isDark) {
+        const html = document.documentElement;
+        if (isDark) {
+          html.classList.add('dark');
+        } else {
+          html.classList.remove('dark');
+        }
+      }
+
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let isDark = savedTheme === 'dark' || (savedTheme === null && prefersDark);
+      applyTheme(isDark);
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        let map;
+        let busMarker;
+        let routePolyline;
+        let destinationMarker; // Variável para o marcador de destino
+        let currentBusId;
+        let googleMapsScript;
+
+        function initMap(busId ) {
+            currentBusId = busId;
+            document.getElementById("map-title").textContent = `Acompanhamento do Ônibus ${busId}`;
+
+            const initialPosition = { lat: -27.10597, lng: -52.61336 }; 
+
+            if (!map) {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: initialPosition,
+                });
+            } else {
+                map.setCenter(initialPosition);
+            }
+
+            if (busMarker) busMarker.setMap(null);
+            if (routePolyline) routePolyline.setMap(null);
+            if (destinationMarker) destinationMarker.setMap(null); // Limpa o marcador de destino
+
+            busMarker = new google.maps.Marker({
+                position: initialPosition,
+                map: map,
+                title: `Ônibus ${busId} em Rota`,
+                icon: {
+                    url: "https://maps.google.com/mapfiles/ms/icons/bus.png",
+                    scaledSize: new google.maps.Size(40, 40 )
+                }
+            });
+
+            if (typeof socket === 'undefined') {
+                window.socket = io('http://' + document.domain + ':' + location.port + '/tracking' );
+
+                socket.on('connect', () => {
+                    console.log('Conectado ao servidor de rastreamento em tempo real.');
+                });
+
+                socket.on('location_update', (data) => {
+                    if (data.bus_id == currentBusId) {
+                        console.log('Nova localização recebida:', data);
+                        const newPosition = new google.maps.LatLng(data.latitude, data.longitude);
+                        if (busMarker) {
+                            // Mover o marcador
+                            busMarker.setPosition(newPosition);
+                            map.panTo(newPosition);
+                        }
+                    }
+                });
+            }
+
+            // 4. Buscar e desenhar a rota real
+            fetchRoute(busId);
+        }
+
+        function fetchRoute(busId) {
+            fetch(`/api/route/${busId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.polyline) {
+                        // Decodifica a string do polyline (requer a biblioteca 'geometry')
+                        const path = google.maps.geometry.encoding.decodePath(data.polyline);
+                        
+                        // Desenha a rota no mapa
+                        routePolyline = new google.maps.Polyline({
+                            path: path,
+                            geodesic: true,
+                            strokeColor: "#FF0000",
+                            strokeOpacity: 1.0,
+                            strokeWeight: 4,
+                            map: map,
+                        });
+
+                        // Adiciona o marcador de destino
+                        const destinationPosition = path[path.length - 1]; // O último ponto do polyline é o destino
+                        
+                        destinationMarker = new google.maps.Marker({
+                            position: destinationPosition,
+                            map: map,
+                            title: `Destino da Linha ${busId}`,
+                            icon: {
+                                url: "https://maps.google.com/mapfiles/ms/icons/flag.png", // Ícone de bandeira para destino
+                                scaledSize: new google.maps.Size(32, 32)
+                            }
+                        });
+                    } else {
+                        console.error('Erro ao buscar rota:', data.error);
+                    }
+                })
+                .catch(error => console.error('Erro de rede ao buscar rota:', error));
+        }
+
+        function loadGoogleMapsAPI() {
+            if (!googleMapsScript) {
+                googleMapsScript = document.createElement('script');
+                googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGS1Qx2M6jWsgtRoT_dxkaB9-_-Wq0E8&callback=initMapWrapper&libraries=geometry`;
+                googleMapsScript.async = true;
+                googleMapsScript.defer = true;
+                document.head.appendChild(googleMapsScript );
+            }
+        }
+
+        function initMapWrapper() {
+            // Esta função wrapper é necessária para o callback da API do Google
+            // A função `initMap` será chamada diretamente pelo `acompanharOnibus`
+        }
+
+        // Carrega a API do Google Maps quando a página é carregada
+        window.onload = loadGoogleMapsAPI;
+
+    </script>
+</body>
+</html>

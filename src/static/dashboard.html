@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Mobilidade Urbana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="shortcut icon" href="./img/icone_site.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Sistema de Notificações -->
+    <link rel="stylesheet" href="./notifications.css" />
+    <script src="./notifications.js"></script>
+    <style>
+      .bg-bus {
+        background-image: url("http://static.photos/transport/1200x630/4");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .text-2xl {
+        padding-left: 50px;
+      }
+
+      .text-xs {
+        padding-left: 50px;
+      }
+    </style>
+
+    <style>
+      /* Estilos para o tema escuro */
+      .dark .bg-yellow-50 {
+        background-color: #1a202c; /* Cinza escuro */
+      }
+      .dark .bg-yellow-500 {
+        background-color: #facc15; /* Cinza um pouco mais claro */
+      }
+      .dark .text-white {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-800 {
+        color: #f7fafc; /* Branco */
+      }
+      .dark .text-yellow-600 {
+        color: #a0aec0; /* Cinza claro */
+      }
+      .dark .bg-white {
+        background-color: #2d3748;
+      }
+      .dark .border-yellow-200 {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .divide-yellow-100 > :not([hidden]) ~ :not([hidden]) {
+        border-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .hover\:bg-yellow-50:hover {
+        background-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .bg-yellow-100 {
+        background-color: #4a5568; /* Cinza escuro */
+      }
+      .dark .from-yellow-400 {
+        --tw-gradient-from: #facc15;
+        --tw-gradient-to: #4a5568;
+        --tw-gradient-stops: var(--tw-gradient-from), #4a5568;
+      }
+      .dark .to-yellow-600 {
+        --tw-gradient-to: #2d3748;
+      }
+
+      /* Estilos para a Sidebar */
+      .sidebar {
+        position: fixed;
+        left: -300px;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        background: linear-gradient(
+          180deg,
+          #fbbf24 0%,
+          #f59e0b 50%,
+          #d97706 100%
+        );
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        padding-top: 80px;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        padding: 18px 24px;
+        margin: 4px 12px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border-radius: 12px;
+        position: relative;
+      }
+
+      .sidebar-item:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateX(8px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 0;
+        background: white;
+        border-radius: 0 4px 4px 0;
+        transition: height 0.3s ease;
+      }
+
+      .sidebar-item:hover::before {
+        height: 70%;
+      }
+
+      .sidebar-item i {
+        margin-right: 16px;
+        width: 24px;
+        height: 24px;
+      }
+
+      .sidebar-item span {
+        font-size: 16px;
+        font-weight: 500;
+        padding-left: 10px;
+      }
+
+      .menu-toggle {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        z-index: 1001;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .dark .sidebar {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      }
+
+      .dark .sidebar-item:hover {
+        background-color: #4a5568;
+      }
+      /* box ao redor das tres barras no tema dark */
+      /* .dark .menu-toggle {
+        background-color: #2d3748;
+      } */
+
+      /* .dark .menu-toggle:hover {
+        background-color: #4a5568;
+      } */
+
+      /* Overlay para fechar a sidebar ao clicar fora */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      /* Modal de Histórico de Recarga */
+      .recharge-history-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1002;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .recharge-history-modal.active {
+        display: flex;
+      }
+
+      .recharge-history-content {
+        background-color: white;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .dark .recharge-history-content {
+        background-color: #2d3748;
+      }
+
+      .recharge-item {
+        border-bottom: 1px solid #fef3c7;
+        transition: background-color 0.2s;
+      }
+
+      .recharge-item:hover {
+        background-color: #fef3c7;
+      }
+
+      .dark .recharge-item {
+        border-bottom-color: #4a5568;
+      }
+
+      .dark .recharge-item:hover {
+        background-color: #4a5568;
+      }
+    </style>
+  </head>
+  <body class="bg-yellow-50 min-h-screen">
+    <!-- Overlay para fechar sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Menu Toggle (Ícone de 3 barras) -->
+    <div class="menu-toggle" id="menuToggle">
+      <i data-feather="menu" class="w-6 h-6"></i>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <!-- Gerenciar Motoristas (Visível apenas para Admin) -->
+      <a href="add-driver.html" class="sidebar-item hidden" id="sidebarDrivers">
+        <i data-feather="users"></i>
+        <span>Gerenciar Motoristas</span>
+      </a>
+
+      <!-- Gerenciar Frota (Visível apenas para Admin) -->
+      <a href="add-vehicle.html" class="sidebar-item hidden" id="sidebarFleet">
+        <i data-feather="truck"></i>
+        <span>Gerenciar Frota</span>
+      </a>
+
+      <!-- Histórico de Recarga -->
+      <a href="#" class="sidebar-item hidden" id="sidebarRechargeHistory">
+        <i data-feather="clock"></i>
+        <span>Histórico de Recarga</span>
+      </a>
+
+      <!-- Avaliação -->
+      <a href="rating.html" class="sidebar-item">
+        <i data-feather="star"></i>
+        <span>Avaliação</span>
+      </a>
+
+      <!-- Sair -->
+      <a href="index.html" class="sidebar-item">
+        <i data-feather="log-out"></i>
+        <span>Sair</span>
+      </a>
+    </nav>
+
+    <!-- Header -->
+    <header
+      class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 text-white shadow-2xl sticky top-0 z-40"
+    >
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-3 animate-slide-left">
+          <div
+            class="bg-white/20 backdrop-blur-sm p-2 rounded-xl hover-scale transition-all"
+          >
+            <i data-feather="bus" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-shadow">Mobilidade Urbana</h1>
+            <p class="text-xs opacity-90">Painel de Controle</p>
+          </div>
+        </div>
+        <div class="flex space-x-4 relative">
+          <!-- Botão de Notificações -->
+          <button
+            id="notificationButton"
+            class="p-2.5 rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all hover-scale relative"
+            title="Notificações"
+          >
+            <i data-feather="bell" class="w-6 h-6"></i>
+            <span
+              id="notificationBadge"
+              class="absolute top-0 right-0 block h-3 w-3 rounded-full ring-2 ring-yellow-500 bg-red-500 hidden"
+            ></span>
+          </button>
+          <!-- Container de Notificações -->
+          <div
+            id="notificationDropdown"
+            class="absolute right-0 mt-12 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 hidden"
+          >
+            <div class="py-2">
+              <h3
+                class="text-lg font-semibold px-4 py-2 text-yellow-800 dark:text-white border-b dark:border-gray-700"
+              >
+                Notificações
+              </h3>
+              <div id="notificationList" class="max-h-80 overflow-y-auto">
+                <!-- Notificações serão inseridas aqui -->
+                <p
+                  class="text-gray-500 dark:text-gray-400 p-4 text-sm"
+                  id="noNotificationsMessage"
+                >
+                  Nenhuma notificação nova.
+                </p>
+              </div>
+              <div class="border-t dark:border-gray-700">
+                <button
+                  id="markAllAsRead"
+                  class="w-full text-center text-sm text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-gray-700 py-2 transition"
+                >
+                  Marcar todas como lidas
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+            onclick="window.location.href='profile.html'"
+            class="p-2.5 rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all hover-scale"
+            title="Perfil"
+          >
+            <i data-feather="user" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Card de Saldo -->
+      <div class="mb-8 animate-fade-in">
+        <div
+          class="bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 rounded-3xl shadow-2xl p-8 text-white relative overflow-hidden hover-lift"
+        >
+          <!-- Decorative circles -->
+          <div
+            class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"
+          ></div>
+          <div
+            class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"
+          ></div>
+
+          <div class="relative z-10">
+            <div class="flex items-start justify-between mb-6">
+              <div>
+                <p
+                  class="text-sm font-medium opacity-90 mb-2 flex items-center"
+                >
+                  <i data-feather="credit-card" class="w-4 h-4 mr-2"></i>
+                  Saldo do Cartão
+                </p>
+                <p
+                  id="cardBalance"
+                  class="text-5xl font-bold text-shadow-lg mb-1"
+                >
+                  R$ 0,00
+                </p>
+                <p class="text-xs opacity-75">Atualizado agora</p>
+              </div>
+              <div
+                class="bg-white/20 backdrop-blur-sm p-4 rounded-2xl animate-float"
+              >
+                <i data-feather="wallet" class="w-10 h-10"></i>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button
+                onclick="window.location.href='recarga.html'"
+                class="flex-1 bg-white text-orange-600 px-6 py-3 rounded-xl font-semibold hover:bg-orange-50 transition-all hover-lift shadow-lg"
+              >
+                <span class="flex items-center justify-center">
+                  <i data-feather="plus-circle" class="w-5 h-5 mr-2"></i>
+                  Recarregar
+                </span>
+              </button>
+              <button
+                onclick="document.getElementById('sidebarRechargeHistory').click()"
+                class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all hover-scale"
+              >
+                <i data-feather="clock" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card Recarga -->
+        <div
+          class="group card-modern hover-lift animate-fade-in overflow-hidden"
+          style="animation-delay: 0.1s"
+        >
+          <div
+            class="bg-gradient-to-br from-yellow-400 to-orange-500 p-6 relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"
+            ></div>
+            <i
+              data-feather="credit-card"
+              class="w-12 h-12 text-white relative z-10 group-hover:scale-110 transition-transform"
+            ></i>
+          </div>
+          <div class="p-6">
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-orange-600 transition-colors"
+            >
+              Recarga de Cartão
+            </h3>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-6 text-sm leading-relaxed"
+            >
+              Recarregue seu cartão de transporte de forma rápida e segura.
+            </p>
+            <button
+              onclick="window.location.href='recarga.html'"
+              class="w-full py-3 px-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-xl font-semibold hover:shadow-xl transition-all hover-lift"
+            >
+              <span class="flex items-center justify-center">
+                <span>Acessar</span>
+                <i
+                  data-feather="arrow-right"
+                  class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Acompanhamento -->
+        <div
+          class="group card-modern hover-lift animate-fade-in overflow-hidden"
+          style="animation-delay: 0.2s"
+        >
+          <div
+            class="bg-gradient-to-br from-blue-400 to-blue-600 p-6 relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"
+            ></div>
+            <i
+              data-feather="map-pin"
+              class="w-12 h-12 text-white relative z-10 group-hover:scale-110 transition-transform"
+            ></i>
+          </div>
+          <div class="p-6">
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 transition-colors"
+            >
+              Acompanhamento de Ônibus
+            </h3>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-6 text-sm leading-relaxed"
+            >
+              Acompanhe em tempo real a localização dos ônibus das linhas
+              disponíveis.
+            </p>
+            <button
+              onclick="window.location.href='acompanhamento.html'"
+              class="w-full py-3 px-4 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all hover-lift"
+            >
+              <span class="flex items-center justify-center">
+                <span>Acessar</span>
+                <i
+                  data-feather="arrow-right"
+                  class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Rota -->
+        <div
+          class="group card-modern hover-lift animate-fade-in overflow-hidden"
+          style="animation-delay: 0.3s"
+        >
+          <div
+            class="bg-gradient-to-br from-green-400 to-green-600 p-6 relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10"
+            ></div>
+            <i
+              data-feather="navigation"
+              class="w-12 h-12 text-white relative z-10 group-hover:scale-110 transition-transform"
+            ></i>
+          </div>
+          <div class="p-6">
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-600 transition-colors"
+            >
+              Planejamento de Rota
+            </h3>
+            <p
+              class="text-gray-600 dark:text-gray-300 mb-6 text-sm leading-relaxed"
+            >
+              Planeje sua rota de forma eficiente com nossas sugestões de
+              trajeto.
+            </p>
+            <button
+              onclick="window.location.href='rota.html'"
+              class="w-full py-3 px-4 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all hover-lift"
+            >
+              <span class="flex items-center justify-center">
+                <span>Acessar</span>
+                <i
+                  data-feather="arrow-right"
+                  class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                ></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de Histórico de Recarga -->
+    <div class="recharge-history-modal" id="rechargeHistoryModal">
+      <div class="recharge-history-content">
+        <div
+          class="p-6 border-b border-yellow-200 dark:border-gray-700 flex justify-between items-center"
+        >
+          <h2 class="text-2xl font-bold text-yellow-800 dark:text-white">
+            <i data-feather="clock" class="w-6 h-6 inline mr-2"></i>
+            Histórico de Recargas
+          </h2>
+          <button
+            id="closeHistoryModal"
+            class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-200 transition"
+          >
+            <i data-feather="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <div class="p-6">
+          <div id="rechargeHistoryList" class="space-y-2">
+            <!-- Histórico será carregado aqui -->
+            <div class="text-center text-yellow-600 dark:text-yellow-400 py-8">
+              <i data-feather="loader" class="w-8 h-8 inline animate-spin"></i>
+              <p class="mt-2">Carregando histórico...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+
+      // Controle da Sidebar
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      // Abrir sidebar ao passar o mouse sobre o menu toggle
+      menuToggle.addEventListener("mouseenter", function () {
+        sidebar.classList.add("open");
+        sidebarOverlay.classList.add("active");
+      });
+
+      // Manter sidebar aberta quando o mouse está sobre ela
+      sidebar.addEventListener("mouseenter", function () {
+        sidebar.classList.add("open");
+        sidebarOverlay.classList.add("active");
+      });
+
+      // Fechar sidebar quando o mouse sai dela
+      sidebar.addEventListener("mouseleave", function () {
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("active");
+      });
+
+      // Fechar sidebar ao clicar no overlay
+      sidebarOverlay.addEventListener("click", function () {
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("active");
+      });
+
+      // Controle do Modal de Histórico de Recarga
+      const rechargeHistoryModal = document.getElementById(
+        "rechargeHistoryModal"
+      );
+      const sidebarRechargeHistory = document.getElementById(
+        "sidebarRechargeHistory"
+      );
+      const closeHistoryModal = document.getElementById("closeHistoryModal");
+
+      // Abrir modal de histórico
+      sidebarRechargeHistory.addEventListener("click", function (e) {
+        e.preventDefault();
+        rechargeHistoryModal.classList.add("active");
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("active");
+        loadRechargeHistory();
+        setTimeout(() => feather.replace(), 100);
+      });
+
+      // Fechar modal
+      closeHistoryModal.addEventListener("click", function () {
+        rechargeHistoryModal.classList.remove("active");
+      });
+
+      // Fechar modal ao clicar fora
+      rechargeHistoryModal.addEventListener("click", function (e) {
+        if (e.target === rechargeHistoryModal) {
+          rechargeHistoryModal.classList.remove("active");
+        }
+      });
+
+      // Função para carregar o histórico de recargas
+      async function loadRechargeHistory() {
+        const historyList = document.getElementById("rechargeHistoryList");
+
+        try {
+          const response = await fetch("/api/recharge-history", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            displayRechargeHistory(data.recharges || []);
+          } else if (response.status === 401) {
+            window.location.href = "login.html";
+          } else {
+            // Se a API não existir, usar dados de exemplo do localStorage
+            const mockData = getMockRechargeHistory();
+            displayRechargeHistory(mockData);
+          }
+        } catch (error) {
+          console.error("Erro ao carregar histórico:", error);
+          // Usar dados de exemplo em caso de erro
+          const mockData = getMockRechargeHistory();
+          displayRechargeHistory(mockData);
+        }
+      }
+
+      // Função para exibir o histórico
+      function displayRechargeHistory(recharges) {
+        const historyList = document.getElementById("rechargeHistoryList");
+
+        if (recharges.length === 0) {
+          historyList.innerHTML = `
+            <div class="text-center text-yellow-600 dark:text-yellow-400 py-8">
+              <i data-feather="inbox" class="w-12 h-12 inline mb-2"></i>
+              <p class="text-lg">Nenhuma recarga encontrada</p>
+              <p class="text-sm mt-2">Suas recargas aparecerão aqui</p>
+            </div>
+          `;
+        } else {
+          historyList.innerHTML = recharges
+            .map((recharge) => {
+              const statusClass =
+                recharge.status === "completed"
+                  ? "text-green-600 dark:text-green-400"
+                  : recharge.status === "pending"
+                  ? "text-yellow-600 dark:text-yellow-400"
+                  : "text-red-600 dark:text-red-400";
+              const statusText =
+                recharge.status === "completed"
+                  ? "Concluída"
+                  : recharge.status === "pending"
+                  ? "Pendente"
+                  : "Falhou";
+              const statusIcon =
+                recharge.status === "completed"
+                  ? "check-circle"
+                  : recharge.status === "pending"
+                  ? "clock"
+                  : "x-circle";
+
+              return `
+              <div class="recharge-item p-4 rounded-lg">
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-2">
+                      <i data-feather="${statusIcon}" class="w-5 h-5 ${statusClass} mr-2"></i>
+                      <span class="font-semibold text-yellow-800 dark:text-white">
+                        R$ ${parseFloat(recharge.amount)
+                          .toFixed(2)
+                          .replace(".", ",")}
+                      </span>
+                    </div>
+                    <div class="text-sm text-yellow-600 dark:text-yellow-400">
+                      <p><strong>Método:</strong> ${getPaymentMethodName(
+                        recharge.payment_method
+                      )}</p>
+                      <p><strong>Data:</strong> ${formatDate(
+                        recharge.created_at
+                      )}</p>
+                      ${
+                        recharge.transaction_id
+                          ? `<p class="text-xs mt-1 opacity-75">ID: ${recharge.transaction_id}</p>`
+                          : ""
+                      }
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="${statusClass} text-sm font-medium">${statusText}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+            })
+            .join("");
+        }
+
+        feather.replace();
+      }
+
+      // Função para obter nome do método de pagamento
+      function getPaymentMethodName(method) {
+        const methods = {
+          cartao: "Cartão de Crédito",
+          pix: "PIX",
+          boleto: "Boleto Bancário",
+        };
+        return methods[method] || method;
+      }
+
+      // Função para formatar data
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      // Função para obter dados de exemplo (mock)
+      function getMockRechargeHistory() {
+        const stored = localStorage.getItem("mock_recharge_history");
+        if (stored) {
+          return JSON.parse(stored);
+        }
+
+        // Se não houver histórico, retornar array vazio
+        return [];
+      }
+
+      // Função para verificar se há histórico de recarga e exibir o item da sidebar
+      function checkRechargeHistoryVisibility() {
+        const history = getMockRechargeHistory();
+        const sidebarItem = document.getElementById("sidebarRechargeHistory");
+
+        if (history.length > 0) {
+          sidebarItem.classList.remove("hidden");
+        } else {
+          sidebarItem.classList.add("hidden");
+        }
+      }
+
+      // Função para criar dados de exemplo iniciais (apenas para simular o primeiro acesso)
+      // Não é mais usada, pois o histórico só aparece após a primeira recarga.
+      // Mantida apenas para referência.
+      function createInitialMockHistory() {
+        // Não cria dados iniciais, apenas garante que o localStorage está vazio
+        localStorage.setItem("mock_recharge_history", "[]");
+      }
+
+      // Função para carregar o perfil do usuário e verificar o status de admin
+      async function loadUserProfile() {
+        try {
+          const response = await fetch("/api/profile", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+            if (user.role === "admin") {
+              document
+                .getElementById("sidebarDrivers")
+                .classList.remove("hidden");
+              document
+                .getElementById("sidebarFleet")
+                .classList.remove("hidden");
+            }
+          } else if (response.status === 401) {
+            // Usuário não autenticado, redirecionar para login
+            window.location.href = "login.html";
+          }
+        } catch (error) {
+          console.error("Erro ao carregar perfil:", error);
+        }
+      }
+
+      // Função para carregar o saldo do usuário
+      async function loadUserBalance() {
+        try {
+          const response = await fetch("/api/balance", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const balanceElement = document.getElementById("cardBalance");
+            const currentBalance = data.balance;
+            balanceElement.textContent = `R$ ${currentBalance
+              .toFixed(2)
+              .replace(".", ",")}`;
+
+            // Nova verificação de saldo baixo usando o sistema de notificações
+            if (window.NotificationSystem) {
+              window.NotificationSystem.checkLowBalance(currentBalance);
+            }
+          } else if (response.status === 401) {
+            // Usuário não autenticado, redirecionar para login
+            window.location.href = "login.html";
+          }
+        } catch (error) {
+          console.error("Erro ao carregar saldo:", error);
+        }
+      }
+
+      // Função para iniciar as verificações periódicas
+      function startBalanceUpdates() {
+        // Atualizar saldo a cada 30 segundos
+        setInterval(loadUserBalance, 30000);
+      }
+
+      // Função para verificar se houve recarga recente
+      function checkForRecentRecharge() {
+        // Verificar se há um parâmetro na URL indicando recarga
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("recharge") === "success") {
+          // Mostrar notificação de sucesso
+          showRechargeNotification();
+          // Limpar o parâmetro da URL
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+          // Atualizar saldo imediatamente
+          setTimeout(loadUserBalance, 1000);
+        }
+      }
+
+      // Função para mostrar notificação de recarga bem-sucedida
+      function showRechargeNotification() {
+        // Esta função não é mais necessária, pois a notificação é criada no backend
+        // e buscada pelo sistema de notificações.
+        // Apenas forçamos a atualização do saldo e a busca de notificações.
+        if (window.NotificationSystem) {
+          window.NotificationSystem.manager.fetchNotificationsFromAPI();
+        }
+      }
+
+      // Listener para quando a página ganha foco (usuário volta para a aba)
+      window.addEventListener("focus", function () {
+        loadUserBalance();
+      });
+
+      // Listener para mudanças no localStorage (comunicação entre abas)
+      window.addEventListener("storage", function (e) {
+        if (e.key === "recharge_completed") {
+          loadUserBalance();
+          checkRechargeHistoryVisibility(); // Atualizar visibilidade do histórico
+          // Forçar a busca de notificações para pegar a de recarga
+          if (window.NotificationSystem) {
+            window.NotificationSystem.manager.fetchNotificationsFromAPI();
+          }
+          localStorage.removeItem("recharge_completed");
+        }
+      });
+
+      // Carregar saldo quando a página carregar
+      document.addEventListener("DOMContentLoaded", function () {
+        // Se não houver histórico mock, inicializar com array vazio para garantir que o item da sidebar fique oculto
+        if (!localStorage.getItem("mock_recharge_history")) {
+          localStorage.setItem("mock_recharge_history", "[]");
+        }
+
+        loadUserProfile(); // Carrega o perfil e verifica o admin
+        loadUserBalance();
+        startBalanceUpdates();
+        checkForRecentRecharge();
+        checkRechargeHistoryVisibility(); // Verificar visibilidade do histórico
+        // O sistema de notificações é inicializado automaticamente pelo script
+
+        // Adicionar listener para o evento de armazenamento (quando a recarga é concluída em outra página)
+        window.addEventListener("storage", function (e) {
+          if (e.key === "mock_recharge_history") {
+            checkRechargeHistoryVisibility();
+            loadRechargeHistory(); // Adicionar esta linha para recarregar o conteúdo do modal
+          }
+        });
+
+        // Atualizar ícones do Feather após carregar a página
+        setTimeout(() => feather.replace(), 100);
+      });
+    </script>
+
+    <script>
+      // Script de inicialização do tema
+      function applyTheme(isDark) {
+        const html = document.documentElement;
+        if (isDark) {
+          html.classList.add("dark");
+          html.classList.remove("light");
+        } else {
+          html.classList.remove("dark");
+          html.classList.add("light");
+        }
+        feather.replace();
+      }
+
+      const savedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      let isDark =
+        savedTheme === "dark" || (savedTheme === null && prefersDark);
+      applyTheme(isDark);
+    </script>
+  </body>
+</html>
+
+<link rel="icon" href="favicon.png" type="image/png" />

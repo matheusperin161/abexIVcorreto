@@ -1,0 +1,362 @@
+/* ===== ANIMAÇÕES MODERNAS ===== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ===== CLASSES DE ANIMAÇÃO ===== */
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+/* ===== TRANSIÇÕES SUAVES ===== */
+
+.transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-smooth {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== EFEITOS DE HOVER MODERNOS ===== */
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(234, 179, 8, 0.6);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ===== GRADIENTES MODERNOS ===== */
+
+.gradient-primary {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.gradient-overlay {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.9) 0%, rgba(245, 158, 11, 0.9) 100%);
+}
+
+/* ===== GLASSMORPHISM ===== */
+
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== LOADING STATES ===== */
+
+.skeleton {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+}
+
+/* ===== BOTÕES MODERNOS ===== */
+
+.btn-modern {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-modern::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-modern:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-modern:active {
+  transform: scale(0.95);
+}
+
+/* ===== CARDS MODERNOS ===== */
+
+.card-modern {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card-modern:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark .card-modern {
+  background: #2d3748;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark .card-modern:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== INPUTS MODERNOS ===== */
+
+.input-modern {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.input-modern:focus {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+  transform: translateY(-1px);
+}
+
+/* ===== SCROLLBAR PERSONALIZADA ===== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fbbf24;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1a202c;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4a5568;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #718096;
+}
+
+/* ===== TEMA ESCURO ===== */
+
+.dark .bg-yellow-50 {
+  background-color: #0f172a;
+}
+
+.dark .bg-white {
+  background-color: #1e293b;
+}
+
+.dark .text-yellow-800,
+.dark .text-yellow-900 {
+  color: #f1f5f9;
+}
+
+.dark .text-yellow-600,
+.dark .text-yellow-700 {
+  color: #cbd5e1;
+}
+
+.dark .border-yellow-200,
+.dark .border-yellow-300 {
+  border-color: #334155;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 768px) {
+  .card-modern {
+    border-radius: 12px;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* ===== ACESSIBILIDADE ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== UTILITÁRIOS ===== */
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
